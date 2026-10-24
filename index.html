@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light" data-theme-mode="auto" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumina — 一间属于你自己的 AI 工坊</title>
+<meta name="description" content="Lumina 系列：AI Core、Engine、Voice、Artist 与 AR。全部跑在本地，围绕两个原创角色展开。">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f0e9">
+<link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="assets/img/ewin-sm.webp" imagesrcset="assets/img/ewin-sm.webp 274w, assets/img/ewin.webp 530w" imagesizes="(max-width: 760px) 46vw, 300px">
+<link rel="preload" as="image" href="assets/img/miya-sm.webp" imagesrcset="assets/img/miya-sm.webp 286w, assets/img/miya.webp 553w" imagesizes="(max-width: 760px) 42vw, 280px">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>
+(function () {
+  var d = document.documentElement;
+  var mode = 'auto', lang = '';
+  try {
+    var t = localStorage.getItem('lumina-theme');
+    if (t === 'light' || t === 'dark' || t === 'auto') mode = t;
+    lang = localStorage.getItem('lumina-lang') || '';
+  } catch (e) {}
+  try {
+    var q = new URLSearchParams(location.search);
+    var qm = q.get('theme'), ql = q.get('lang');
+    if (qm === 'light' || qm === 'dark' || qm === 'auto') mode = qm;
+    if (ql === 'zh' || ql === 'en') lang = ql;
+  } catch (e) {}
+  var dark = mode === 'dark' || (mode === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  d.dataset.theme = dark ? 'dark' : 'light';
+  d.dataset.themeMode = mode;
+  if (lang !== 'zh' && lang !== 'en') lang = (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+  d.dataset.lang = lang;
+  d.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  d.classList.add('js');
+})();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#main" data-zh="跳到主要内容" data-en="Skip to content">跳到主要内容</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="theme-flash" aria-hidden="true"></div>
+
+<header class="site-head" id="top">
+  <div class="head-inner">
+    <a class="brand" href="#top" aria-label="Lumina home">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle cx="16" cy="16" r="9.4" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M16 1.5v6M16 24.5v6M1.5 16h6M24.5 16h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+      </svg>
+      <span class="brand-word">Lumina</span>
+      <span class="brand-sub">series</span>
+    </a>
+
+    <nav class="nav" aria-label="主导航" data-zh-aria="主导航" data-en-aria="Main navigation">
+      <a href="#series" data-nav="series" data-zh="系列" data-en="Series">系列</a>
+      <a href="#engine" data-nav="engine" data-zh="引擎" data-en="Engine">引擎</a>
+      <a href="#voice" data-nav="voice" data-zh="声音" data-en="Voice">声音</a>
+      <a href="#characters" data-nav="characters" data-zh="角色" data-en="Characters">角色</a>
+      <a href="#about" data-nav="about" data-zh="关于" data-en="About">关于</a>
+    </nav>
+
+    <div class="head-tools">
+      <div class="seg lang-seg" role="group" aria-label="语言 / Language">
+        <button type="button" data-lang-set="zh" aria-pressed="true">中</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+
+      <div class="seg theme-seg" id="theme-seg" role="group" aria-label="主题 / Theme" data-zh-aria="主题" data-en-aria="Theme">
+        <span class="seg-thumb" aria-hidden="true"></span>
+        <button type="button" data-theme-set="auto" aria-pressed="true" data-zh-aria="跟随系统" data-en-aria="Follow system" title="跟随系统 / Auto">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 3.8a6.2 6.2 0 0 1 0 12.4Z" fill="currentColor"/></svg>
+          <span class="vh" data-zh="跟随系统" data-en="Auto">跟随系统</span>
+        </button>
+        <button type="button" data-theme-set="light" aria-pressed="false" data-zh-aria="浅色" data-en-aria="Light" title="浅色 / Light">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 1.6v2M10 16.4v2M1.6 10h2M16.4 10h2M4.1 4.1l1.4 1.4M14.5 14.5l1.4 1.4M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span class="vh" data-zh="浅色" data-en="Light">浅色</span>
+        </button>
+        <button type="button" data-theme-set="dark" aria-pressed="false" data-zh-aria="深色" data-en-aria="Dark" title="深色 / Dark">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M15.8 12.3A6.6 6.6 0 0 1 7.7 4.2a6.6 6.6 0 1 0 8.1 8.1Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span class="vh" data-zh="深色" data-en="Dark">深色</span>
+        </button>
+      </div>
+
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-zh-aria="打开菜单" data-en-aria="Open menu">
+        <span></span><span></span>
+        <span class="vh" data-zh="菜单" data-en="Menu">菜单</span>
+      </button>
+    </div>
+  </div>
+  <div class="head-progress" aria-hidden="true"></div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" hidden>
+  <nav aria-label="移动导航" data-zh-aria="移动导航" data-en-aria="Mobile navigation">
+    <a href="#series" data-zh="01 系列" data-en="01 Series">01 系列</a>
+    <a href="#engine" data-zh="02 引擎" data-en="02 Engine">02 引擎</a>
+    <a href="#voice" data-zh="03 声音" data-en="03 Voice">03 声音</a>
+    <a href="#characters" data-zh="04 角色" data-en="04 Characters">04 角色</a>
+    <a href="#about" data-zh="05 关于" data-en="05 About">05 关于</a>
+  </nav>
+  <div class="mobile-menu-foot">
+    <span data-zh="从南航跑出来的 380" data-en="380, out of NUAA">从南航跑出来的 380</span>
+    <a href="https://github.com/Happy-380" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow hero-enter" style="--d:0ms">
+          <span class="eyebrow-line" aria-hidden="true"></span>
+          <span data-zh="五个项目 · 两个角色 · 一间工坊" data-en="Five projects · two characters · one workshop">五个项目 · 两个角色 · 一间工坊</span>
+        </p>
+
+        <h1 class="hero-title" id="hero-title" aria-label="Lumina">
+          <span class="word" aria-hidden="true"><span class="ltr" style="--i:0">L</span><span class="ltr" style="--i:1">u</span><span class="ltr" style="--i:2">m</span><span class="ltr" style="--i:3">i</span><span class="ltr" style="--i:4">n</span><span class="ltr" style="--i:5">a</span></span>
+          <svg class="title-stroke" viewBox="0 0 600 44" aria-hidden="true" focusable="false">
+            <path class="brush" d="M4 24C108 13 238 9 362 12c62 2 106 5 138 10-26 6-72 9-138 10-124 2-254 0-358-8Z" fill="currentColor"/>
+            <path class="brush-flick" d="M506 22c14 2 24 5 30 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+          </svg>
+        </h1>
+
+        <p class="hero-kicker hero-enter" style="--d:420ms" data-zh="把光留在自己的机器里。" data-en="Keep the light on your own machine.">把光留在自己的机器里。</p>
+
+        <p class="hero-lede hero-enter" style="--d:500ms" data-zh="从 1-bit 推理内核，到会说话、会画画、迟早站上你桌面的角色。Lumina 是一个人的 AI 工坊：能离线就离线，能本地就本地，联网只是一个选项。" data-en="From a 1-bit inference engine to characters that speak, draw, and will eventually stand on your desk. Lumina is a one-person AI workshop: offline when it can be, local when it should be, online only if you want it.">从 1-bit 推理内核，到会说话、会画画、迟早站上你桌面的角色。Lumina 是一个人的 AI 工坊：能离线就离线，能本地就本地，联网只是一个选项。</p>
+
+        <div class="hero-actions hero-enter" style="--d:580ms">
+          <a class="btn btn-primary" href="#series">
+            <span data-zh="看看这一系列" data-en="See the series">看看这一系列</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/Happy-380" target="_blank" rel="noopener">
+            <span>GitHub</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <p class="hero-meta hero-enter" style="--d:660ms">
+          <span>CPU-FIRST</span><span class="dot" aria-hidden="true"></span><span>AGPL-3.0</span><span class="dot" aria-hidden="true"></span><span data-zh="无需账号" data-en="No account">无需账号</span>
+        </p>
+      </div>
+
+      <div class="hero-art hero-enter" style="--d:320ms">
+        <div class="lens" aria-hidden="true">
+          <div class="lens-disc"></div>
+          <svg class="lens-rings" viewBox="0 0 520 520" focusable="false">
+            <circle cx="260" cy="260" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/>
+            <circle cx="260" cy="260" r="206" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1 7" opacity=".7"/>
+            <circle cx="260" cy="260" r="156" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
+            <path d="M260 4v34M260 482v34M4 260h34M482 260h34" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".65"/>
+          </svg>
+        </div>
+
+        <figure class="plate plate-ewin" data-parallax="14">
+          <div class="plate-art">
+            <img src="assets/img/ewin-sm.webp" srcset="assets/img/ewin-sm.webp 274w, assets/img/ewin.webp 530w" sizes="(max-width: 760px) 46vw, 300px" width="274" height="620" alt="埃文，蓝发猫耳的原创角色，穿着蓝白渐变卫衣" data-zh-alt="埃文，蓝发猫耳的原创角色，穿着蓝白渐变卫衣" data-en-alt="Ewin, a blue-haired cat-eared original character in a blue and white gradient hoodie">
+          </div>
+          <figcaption>
+            <span class="plate-name">Ewin</span>
+            <span class="plate-role" data-zh="值班员" data-en="on duty">值班员</span>
+          </figcaption>
+        </figure>
+
+        <figure class="plate plate-miya" data-parallax="-10">
+          <div class="plate-art">
+            <img src="assets/img/miya-sm.webp" srcset="assets/img/miya-sm.webp 286w, assets/img/miya.webp 553w" sizes="(max-width: 760px) 42vw, 280px" width="285" height="620" alt="米娅，粉色长发的猫耳原创角色，白色连衣裙与粉色外套" data-zh-alt="米娅，粉色长发的猫耳原创角色，白色连衣裙与粉色外套" data-en-alt="Miya, a pink-haired cat-eared original character in a white dress and pink jacket">
+          </div>
+          <figcaption>
+            <span class="plate-name">Miya</span>
+            <span class="plate-role" data-zh="声线与画笔" data-en="voice &amp; brush">声线与画笔</span>
+          </figcaption>
+        </figure>
+
+        <div class="hero-note" aria-hidden="true">
+          <span data-zh="这俩是主角。" data-en="these two run the place.">这俩是主角。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-foot">
+      <div class="hero-foot-line" aria-hidden="true"></div>
+      <ul class="hero-index" aria-label="系列索引" data-zh-aria="系列索引" data-en-aria="Series index">
+        <li><span>01</span><span data-zh="AI Core" data-en="AI Core">AI Core</span></li>
+        <li><span>02</span><span>Engine</span></li>
+        <li><span>03</span><span>Voice</span></li>
+        <li><span>04</span><span data-zh="Artist" data-en="Artist">Artist</span></li>
+        <li><span>05</span><span>AR</span></li>
+      </ul>
+      <a class="scroll-hint" href="#manifesto" data-zh-aria="向下滚动" data-en-aria="Scroll down">
+        <span data-zh="往下看" data-en="scroll">往下看</span>
+        <svg viewBox="0 0 12 26" aria-hidden="true" focusable="false"><path d="M6 1v22M1.5 18.5 6 23l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========================== MANIFESTO ========================= -->
+  <section class="manifesto" id="manifesto" aria-labelledby="manifesto-title">
+    <div class="wrap manifesto-grid">
+      <div class="manifesto-main" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span><span data-zh="先说清楚" data-en="First, the premise">先说清楚</span></p>
+        <h2 class="manifesto-statement" id="manifesto-title">
+          <span class="line" data-zh="不是平台，不是订阅，也不是「AI 助手」。" data-en="Not a platform. Not a subscription. Not another assistant.">不是平台，不是订阅，也不是「AI 助手」。</span>
+          <span class="line" data-zh="是一套能拆开、带走、断网继续用的工具。" data-en="A set of tools you can open up, carry away, and keep using offline.">是一套能拆开、带走、断网继续用的工具。</span>
+        </h2>
+        <p class="manifesto-copy" data-zh="五个项目共用一个前提：模型应该待在它该待的地方——你的电脑里。能离线就离线，能本地就本地。" data-en="All five share one premise: the model belongs where it runs best — on your machine. Offline where possible, local by default.">五个项目共用一个前提：模型应该待在它该跑的地方——你的电脑里。能离线就离线，能本地就本地。</p>
+      </div>
+      <aside class="manifesto-side" data-reveal style="--i:1">
+        <ul class="nonlist">
+          <li><span data-zh="没有云端" data-en="No cloud">没有云端</span></li>
+          <li><span data-zh="没有账号" data-en="No account">没有账号</span></li>
+          <li><span data-zh="没有额度" data-en="No quota">没有额度</span></li>
+        </ul>
+        <p class="hand"><span data-zh="断网也能跑。" data-en="Runs with the Wi-Fi off.">断网也能跑。</span> <span class="hand-en" data-zh="真的。" data-en="Actually.">真的。</span></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================ SERIES ========================== -->
+  <section class="section series" id="series" aria-labelledby="series-title">
+    <div class="wrap">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span><span>01 / <span data-zh="系列" data-en="The series">系列</span></span></p>
+        <h2 class="section-title" id="series-title" data-zh="五件工具，同一间工坊" data-en="Five instruments, one workshop">五件工具，同一间工坊</h2>
+        <p class="section-lede" data-zh="两件已经能用，一件在内部天天跑，两件还在图纸上。" data-en="Two are usable today, one runs here every day, two are still on the drawing board.">两件已经能用，一件在内部天天跑，两件还在图纸上。</p>
+      </header>
+
+      <div class="product-grid">
+        <article class="product product-wide" data-accent="blue" data-reveal style="--i:0">
+          <div class="product-top">
+            <span class="pnum">01</span>
+            <span class="status is-live"><span class="status-dot" aria-hidden="true"></span><span data-zh="可用" data-en="Available">可用</span></span>
+          </div>
+          <div class="product-art" aria-hidden="true">
+            <svg viewBox="0 0 200 150" fill="none" focusable="false">
+              <g stroke="currentColor" stroke-width="1.1" opacity=".55">
+                <circle cx="128" cy="72" r="56" stroke-dasharray="1 8"/>
+                <circle cx="128" cy="72" r="42"/>
+                <circle cx="128" cy="72" r="27" stroke-dasharray="2 6"/>
+              </g>
+              <path d="M96 58h44a8 8 0 0 1 8 8v16a8 8 0 0 1-8 8h-22l-12 10v-10h-10a8 8 0 0 1-8-8V66a8 8 0 0 1 8-8Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M104 72h22M104 79h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="166" cy="42" r="3" fill="currentColor"/>
+              <circle cx="88" cy="104" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Lumina AI Core</h3>
+          <p class="product-line" data-zh="会聊天的那一层" data-en="The layer that talks back">会聊天的那一层</p>
+          <p class="product-copy" data-zh="本地大模型对话内核。1.7B / 4B / 8B 三档模型，语义缓存、历史检索、MCP 工具调用，还有一层把回答染成米娅语气的转换。" data-en="A local LLM conversation core. Three model sizes (1.7B / 4B / 8B), semantic cache, history retrieval, MCP tools, and a style pass that turns replies into Miya's voice.">本地大模型对话内核。1.7B / 4B / 8B 三档模型，语义缓存、历史检索、MCP 工具调用，还有一层把回答染成米娅语气的转换。</p>
+          <ul class="tags" aria-label="技术标签" data-zh-aria="技术标签" data-en-aria="Tech tags">
+            <li>C#</li><li>GGUF</li><li>MCP</li><li data-zh="中英" data-en="ZH / EN">中英</li>
+          </ul>
+          <a class="product-link" href="https://github.com/Happy-380/Lumina-AI-Core" target="_blank" rel="noopener">
+            <span data-zh="查看仓库" data-en="Repository">查看仓库</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article class="product product-tall" data-accent="cyan" data-reveal style="--i:1">
+          <div class="product-top">
+            <span class="pnum">02</span>
+            <span class="status is-live"><span class="status-dot" aria-hidden="true"></span><span data-zh="可用" data-en="Available">可用</span></span>
+          </div>
+          <div class="product-art" aria-hidden="true">
+            <svg viewBox="0 0 200 150" fill="none" focusable="false">
+              <rect x="44" y="36" width="112" height="78" rx="4" stroke="currentColor" stroke-width="1.3"/>
+              <g stroke="currentColor" stroke-width="1.2" opacity=".5">
+                <path d="M60 52v46M76 52v46M92 52v46M108 52v46M124 52v46M140 52v46"/>
+                <path d="M56 70h88M56 88h88"/>
+              </g>
+              <g fill="currentColor"><rect x="72" y="66" width="12" height="8" rx="1"/><rect x="104" y="84" width="12" height="8" rx="1"/><rect x="124" y="66" width="12" height="8" rx="1"/></g>
+              <path d="M44 30v-8M156 30v-8M44 120v8M156 120v8M38 44h-8M38 106h-8M170 44h-8M170 106h-8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Lumina Engine</h3>
+          <p class="product-line" data-zh="把 1-bit 模型压进 CPU" data-en="1-bit inference, squeezed into CPUs">把 1-bit 模型压进 CPU</p>
+          <p class="product-copy" data-zh="基于 llama.cpp 的 Q1_0 推理分支。14 个 CPU 变体、per-128 激活、寄存器分块 GEMM，还有一张把 token 生成再提速的二值查表。" data-en="A Q1_0 inference branch of llama.cpp. Fourteen CPU variants, per-128 activations, register-tiled GEMM, and a binary lookup table that speeds up token generation again.">基于 llama.cpp 的 Q1_0 推理分支。14 个 CPU 变体、per-128 激活、寄存器分块 GEMM，还有一张把 token 生成再提速的二值查表。</p>
+          <ul class="tags" aria-label="技术标签" data-zh-aria="技术标签" data-en-aria="Tech tags">
+            <li>C++</li><li>AVX2</li><li>VNNI</li><li>Vulkan</li>
+          </ul>
+          <a class="product-link" href="https://github.com/Happy-380/Lumina-Engine" target="_blank" rel="noopener">
+            <span data-zh="查看仓库" data-en="Repository">查看仓库</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article class="product" data-accent="rose" data-reveal style="--i:2">
+          <div class="product-top">
+            <span class="pnum">03</span>
+            <span class="status is-live"><span class="status-dot" aria-hidden="true"></span><span data-zh="内部使用" data-en="In daily use">内部使用</span></span>
+          </div>
+          <div class="product-art" aria-hidden="true">
+            <svg viewBox="0 0 200 150" fill="none" focusable="false">
+              <g stroke="currentColor" stroke-linecap="round">
+                <path d="M14 48c22-22 34 22 56 0s34 22 56 0 34 22 56 0" stroke-width="1.2" opacity=".4"/>
+                <path d="M14 68c22-18 34 18 56 0s34 18 56 0 34 18 56 0" stroke-width="1.4" opacity=".65"/>
+                <path d="M14 88c22-14 34 14 56 0s34 14 56 0 34 14 56 0" stroke-width="1.8"/>
+                <path d="M14 108c22-10 34 10 56 0s34 10 56 0 34 10 56 0" stroke-width="1.2" opacity=".4"/>
+              </g>
+              <g fill="currentColor"><circle cx="42" cy="118" r="2"/><circle cx="98" cy="124" r="1.5"/><circle cx="152" cy="116" r="2.2"/></g>
+            </svg>
+          </div>
+          <h3>Lumina Voice</h3>
+          <p class="product-line" data-zh="离线开口" data-en="Speaks with the network off">离线开口</p>
+          <p class="product-copy" data-zh="六种语言的离线 TTS，跑在 CPU 上；需要更私人的音色时，再接一段 RVC。一句四秒的话，生成大约比实时快一点。" data-en="Offline TTS in six languages, running on CPU. Add an RVC pass when you want a more personal timbre. A four-second line takes a little under real time to make.">六种语言的离线 TTS，跑在 CPU 上；需要更私人的音色时，再接一段 RVC。一句四秒的话，生成大约比实时快一点。</p>
+          <ul class="tags" aria-label="技术标签" data-zh-aria="技术标签" data-en-aria="Tech tags">
+            <li>Python</li><li>MeloTTS</li><li>RVC</li><li data-zh="离线" data-en="Offline">离线</li>
+          </ul>
+          <a class="product-link" href="https://space.bilibili.com/3546376302496335" target="_blank" rel="noopener">
+            <span data-zh="在 B 站看演示" data-en="Watch on Bilibili">在 B 站看演示</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article class="product" data-accent="gold" data-reveal style="--i:3">
+          <div class="product-top">
+            <span class="pnum">04</span>
+            <span class="status is-soon"><span class="status-dot" aria-hidden="true"></span><span data-zh="未发布" data-en="Unreleased">未发布</span></span>
+          </div>
+          <div class="product-art" aria-hidden="true">
+            <svg viewBox="0 0 200 150" fill="none" focusable="false">
+              <g stroke="currentColor" stroke-linecap="round">
+                <path d="M30 112c18-56 52-76 92-62" stroke-width="9" opacity=".22"/>
+                <path d="M44 124c26-42 58-58 96-44" stroke-width="5" opacity=".45"/>
+                <path d="M62 128c30-26 58-36 92-26" stroke-width="2.2"/>
+                <path d="M78 42c18 10 26 24 26 44" stroke-width="1.2" opacity=".5"/>
+              </g>
+              <g fill="currentColor"><circle cx="88" cy="38" r="2.4"/><circle cx="146" cy="96" r="2"/><circle cx="56" cy="94" r="1.6"/></g>
+              <path d="M136 40l3.2 8.2L148 51l-8.8 3L136 62l-3.2-8L124 51l8.8-2.8Z" fill="none" stroke="currentColor" stroke-width="1.1"/>
+            </svg>
+          </div>
+          <h3>Lumina Artist</h3>
+          <p class="product-line" data-zh="先画你的角色，再画你的画" data-en="Learn your character, then draw">先画你的角色，再画你的画</p>
+          <p class="product-copy" data-zh="面向个人工作流的 AI 绘图与训练引擎。先让模型记住埃文和米娅，再让他们出现在任何画面里。" data-en="An image-making and training engine for a one-person workflow. Teach it Ewin and Miya first; then put them in any frame you like.">面向个人工作流的 AI 绘图与训练引擎。先让模型记住埃文和米娅，再让他们出现在任何画面里。</p>
+          <ul class="tags" aria-label="技术标签" data-zh-aria="技术标签" data-en-aria="Tech tags">
+            <li data-zh="图像生成" data-en="Image gen">图像生成</li><li>LoRA</li><li data-zh="本地" data-en="Local">本地</li>
+          </ul>
+          <a class="product-link" href="https://space.bilibili.com/3546376302496335" target="_blank" rel="noopener">
+            <span data-zh="在 B 站关注进度" data-en="Follow the progress">在 B 站关注进度</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article class="product" data-accent="teal" data-reveal style="--i:4">
+          <div class="product-top">
+            <span class="pnum">05</span>
+            <span class="status is-soon"><span class="status-dot" aria-hidden="true"></span><span data-zh="未发布" data-en="Unreleased">未发布</span></span>
+          </div>
+          <div class="product-art" aria-hidden="true">
+            <svg viewBox="0 0 200 150" fill="none" focusable="false">
+              <g stroke="currentColor" stroke-width="1.3" opacity=".8">
+                <path d="M44 34h26M44 34v26M156 34h-26M156 34v26M44 116h26M44 116v-26M156 116h-26M156 116v-26"/>
+                <rect x="70" y="52" width="60" height="52" rx="3" stroke-dasharray="3 4"/>
+              </g>
+              <g fill="currentColor">
+                <circle cx="70" cy="52" r="2.6"/><circle cx="130" cy="52" r="2.6"/><circle cx="70" cy="104" r="2.6"/><circle cx="130" cy="104" r="2.6"/>
+              </g>
+              <path d="M70 52 130 104M130 52 70 104" stroke="currentColor" stroke-width="1" opacity=".4"/>
+              <path d="M86 86c0-9 7-16 16-16M118 66c4 4 6 10 6 16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Lumina AR</h3>
+          <p class="product-line" data-zh="让角色站到桌面上" data-en="Put them on your desk">让角色站到桌面上</p>
+          <p class="product-copy" data-zh="AR 虚拟角色引擎。把设定稿里的两个猫耳请出来，站在摄像头、桌面和你的手边。" data-en="An AR character engine. Bring the two cat-eared regulars out of their reference sheets and onto your desk, your camera, your hand.">AR 虚拟角色引擎。把设定稿里的两个猫耳请出来，站在摄像头、桌面和你的手边。</p>
+          <ul class="tags" aria-label="技术标签" data-zh-aria="技术标签" data-en-aria="Tech tags">
+            <li>AR</li><li data-zh="骨骼" data-en="Rig">骨骼</li><li data-zh="实时" data-en="Realtime">实时</li>
+          </ul>
+          <a class="product-link" href="https://space.bilibili.com/3546376302496335" target="_blank" rel="noopener">
+            <span data-zh="在 B 站关注进度" data-en="Follow the progress">在 B 站关注进度</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ ENGINE ========================== -->
+  <section class="section engine" id="engine" aria-labelledby="engine-title">
+    <div class="wrap">
+      <div class="engine-panel" data-reveal>
+        <div class="engine-grid">
+          <div class="engine-copy">
+            <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span><span>02 / Engine</span></p>
+            <h2 class="section-title" id="engine-title" data-zh="把 1-bit 塞进 CPU 的每一条流水线" data-en="Squeezing 1-bit into every CPU pipeline">把 1-bit 塞进 CPU 的每一条流水线</h2>
+            <p data-zh="Bonsai 的 Q1_0 权重只有 ±1。Lumina Engine 为它单独写了一套 CPU 内核：per-128 激活量化、寄存器分块 GEMM、单列 GEMV，以及一张二值查表。其余量化类型、后端和模型保持原样。" data-en="Bonsai's Q1_0 weights are nothing but ±1. Lumina Engine gives them dedicated CPU kernels: per-128 activation quantization, register-tiled GEMM, single-column GEMV, and a binary lookup table. Every other quant type, backend and model is left untouched.">Bonsai 的 Q1_0 权重只有 ±1。Lumina Engine 为它单独写了一套 CPU 内核：per-128 激活量化、寄存器分块 GEMM、单列 GEMV，以及一张二值查表。其余量化类型、后端和模型保持原样。</p>
+
+            <div class="code-line">
+              <div class="code-head"><span data-zh="试一下" data-en="Try it">试一下</span><span class="code-dots" aria-hidden="true">· · ·</span></div>
+              <div class="code-body">
+                <code>Lumina-Engine-cli.exe -m Bonsai-8B.gguf -p "..." -n 256 -t 6</code>
+                <button class="copy-btn" type="button" data-copy="Lumina-Engine-cli.exe -m Bonsai-8B.gguf -p &quot;...&quot; -n 256 -t 6">
+                  <span data-zh="复制" data-en="Copy">复制</span>
+                </button>
+              </div>
+            </div>
+
+            <a class="link-arrow" href="https://github.com/Happy-380/Lumina-Engine" target="_blank" rel="noopener">
+              <span data-zh="读完整 README" data-en="Read the full README">读完整 README</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+
+          <div class="bench">
+            <div class="bench-head">
+              <span data-zh="Prompt 处理 / 相对通用路径" data-en="Prompt processing / vs. generic path">Prompt 处理 / 相对通用路径</span>
+              <span class="bench-key"><i aria-hidden="true"></i><span data-zh="优化后" data-en="optimized">优化后</span><i class="key-base" aria-hidden="true"></i><span data-zh="通用" data-en="generic">通用</span></span>
+            </div>
+            <div class="bench-rows">
+              <div class="bench-row" style="--gain:42.5">
+                <span class="bench-label">pp32</span>
+                <div class="bench-track"><span class="bar-base" style="--w:66.7"></span><span class="bar-opt" style="--w:95"></span></div>
+                <span class="bench-val">+42.5%</span>
+              </div>
+              <div class="bench-row" style="--gain:40.5">
+                <span class="bench-label">pp64</span>
+                <div class="bench-track"><span class="bar-base" style="--w:66.7"></span><span class="bar-opt" style="--w:93.7"></span></div>
+                <span class="bench-val">+40.5%</span>
+              </div>
+              <div class="bench-row" style="--gain:36.8">
+                <span class="bench-label">pp128</span>
+                <div class="bench-track"><span class="bar-base" style="--w:66.7"></span><span class="bar-opt" style="--w:91.2"></span></div>
+                <span class="bench-val">+36.8%</span>
+              </div>
+              <div class="bench-row" style="--gain:33.4">
+                <span class="bench-label">pp256</span>
+                <div class="bench-track"><span class="bar-base" style="--w:66.7"></span><span class="bar-opt" style="--w:88.9"></span></div>
+                <span class="bench-val">+33.4%</span>
+              </div>
+              <div class="bench-row" style="--gain:28.5">
+                <span class="bench-label">pp512</span>
+                <div class="bench-track"><span class="bar-base" style="--w:66.7"></span><span class="bar-opt" style="--w:85.7"></span></div>
+                <span class="bench-val">+28.5%</span>
+              </div>
+            </div>
+            <p class="bench-note" data-zh="i5-10400 · 6 线程 · 单通道 DDR4-2666 · Bonsai-8B（1.07 GiB）。同场 A/B；绝对值受内存带宽影响，比值更可靠。" data-en="i5-10400 · 6 threads · single-channel DDR4-2666 · Bonsai-8B (1.07 GiB). Same-session A/B. Absolute numbers depend on memory bandwidth; the ratios are the point.">i5-10400 · 6 线程 · 单通道 DDR4-2666 · Bonsai-8B（1.07 GiB）。同场 A/B；绝对值受内存带宽影响，比值更可靠。</p>
+            <p class="bench-foot" data-zh="Token 生成（tg）+13%；打开 Q1LUT 后本机 tg 约 +30%。" data-en="Token generation (tg) +13%; with Q1LUT on, about +30% on this machine.">Token 生成（tg）+13%；打开 Q1LUT 后本机 tg 约 +30%。</p>
+          </div>
+        </div>
+
+        <div class="engine-specs">
+          <div class="spec"><span class="spec-val">14</span><span class="spec-label" data-zh="CPU 微架构变体" data-en="CPU micro-arch variants">CPU 微架构变体</span></div>
+          <div class="spec"><span class="spec-val">1.07<span class="unit">GiB</span></span><span class="spec-label" data-zh="8B 模型常驻内存" data-en="8B model, resident">8B 模型常驻内存</span></div>
+          <div class="spec"><span class="spec-val">5.71</span><span class="spec-label" data-zh="困惑度，仍然无损" data-en="perplexity, still lossless">困惑度，仍然无损</span></div>
+          <div class="spec"><span class="spec-val">94.28<span class="unit">%</span></span><span class="spec-label" data-zh="无损压缩后体积" data-en="size after lossless packing">无损压缩后体积</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= VOICE ========================== -->
+  <section class="section voice" id="voice" aria-labelledby="voice-title">
+    <div class="wrap voice-grid">
+      <div class="voice-copy" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span><span>03 / Voice</span></p>
+        <h2 class="section-title" id="voice-title" data-zh="先听见，再相信" data-en="Hear it first">先听见，再相信</h2>
+        <p class="voice-lede" data-zh="六种语言的离线 TTS。所有 checkpoint 和 BERT 编码器都嵌在本地，断网也照样开口；需要更私人的音色时，再接一段 RVC。" data-en="Offline TTS in six languages. Every checkpoint and BERT encoder is embedded locally, so it speaks with the network off. Add an RVC pass when you want a more personal timbre.">六种语言的离线 TTS。所有 checkpoint 和 BERT 编码器都嵌在本地，断网也照样开口；需要更私人的音色时，再接一段 RVC。</p>
+
+      </div>
+
+      <div class="voice-side" data-reveal style="--i:1">
+        <ul class="lang-chips" aria-label="支持的语言" data-zh-aria="支持的语言" data-en-aria="Supported languages">
+          <li>English</li><li>中文</li><li>日本語</li><li>한국어</li><li>Español</li><li>Français</li>
+        </ul>
+
+        <div class="voice-stats">
+          <div><span class="stat-val">6</span><span class="stat-label" data-zh="种语言" data-en="languages">种语言</span></div>
+          <div><span class="stat-val">0.64<span class="unit">×</span></span><span class="stat-label" data-zh="实时（纯 CPU）" data-en="real time, CPU only">实时（纯 CPU）</span></div>
+          <div><span class="stat-val">100<span class="unit">%</span></span><span class="stat-label" data-zh="离线合成" data-en="offline synthesis">离线合成</span></div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================== CHARACTERS ======================= -->
+  <section class="section characters" id="characters" aria-labelledby="characters-title">
+    <div class="characters-wash" aria-hidden="true"></div>
+    <div class="wrap">
+      <header class="section-head" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span><span>04 / <span data-zh="角色" data-en="The two">角色</span></span></p>
+        <h2 class="section-title" id="characters-title" data-zh="他们不是吉祥物" data-en="They're not mascots">他们不是吉祥物</h2>
+        <p class="section-lede" data-zh="埃文和米娅先是 380 的 OC，后来才变成这套工具的两张脸。AI Core 里的两种回答语气，Voice 里的两种声线，Artist 里的两种画风，最后都会在 AR 里站到同一张桌子上。" data-en="Ewin and Miya were 380's OCs before they became the two faces of the toolkit. Two reply styles in AI Core, two voices in Voice, two brushes in Artist — eventually both standing on the same desk in AR.">埃文和米娅先是 380 的 OC，后来才变成这套工具的两张脸。AI Core 里的两种回答语气，Voice 里的两种声线，Artist 里的两种画风，最后都会在 AR 里站到同一张桌子上。</p>
+      </header>
+
+      <article class="character character-ewin" data-reveal>
+        <figure class="char-plate">
+          <div class="char-plate-art">
+            <img src="assets/img/ewin.webp" srcset="assets/img/ewin-sm.webp 274w, assets/img/ewin.webp 530w" sizes="(max-width: 760px) 70vw, 300px" width="530" height="1200" alt="埃文的完整角色设定插画" data-zh-alt="埃文的完整角色设定插画" data-en-alt="Full character illustration of Ewin" loading="lazy">
+          </div>
+          <figcaption>CHARACTER SHEET · 01</figcaption>
+        </figure>
+        <div class="char-copy">
+          <div class="char-head">
+            <h3>Ewin <span class="char-cn">埃文</span></h3>
+            <p class="char-role" data-zh="值班员" data-en="the one on duty">值班员</p>
+          </div>
+          <p data-zh="蓝头发，猫耳，永远穿那件渐变卫衣。他话不多，负责让东西真的跑起来：Engine 的内核、Core 的调度、AR 里的骨骼。" data-en="Blue hair, cat ears, the same gradient hoodie. He doesn't say much. He's the one who makes things actually run: Engine's kernels, Core's scheduler, AR's rig.">蓝头发，猫耳，永远穿那件渐变卫衣。他话不多，负责让东西真的跑起来：Engine 的内核、Core 的调度、AR 里的骨骼。</p>
+          <p class="char-more" data-zh="在 Core 里，他是不绕弯子的那种回答；在 Engine 里，他是终端跑完 256 个 token 后的一行 OK；在 AR 里，他负责把每根骨头放回正确的位置。" data-en="In Core, he's the reply that doesn't circle around. In Engine, the OK after 256 tokens. In AR, the one putting every bone back where it belongs.">在 Core 里，他是不绕弯子的那种回答；在 Engine 里，他是终端跑完 256 个 token 后的一行 OK；在 AR 里，他负责把每根骨头放回正确的位置。</p>
+          <div class="char-series">
+            <span class="char-series-label" data-zh="出现在" data-en="Appears in">出现在</span>
+            <span>Engine</span><span>AI Core</span><span>AR</span>
+          </div>
+          <blockquote class="quote" data-zh="先让它跑起来，再谈优雅。" data-en="Make it run first. Elegance comes after.">先让它跑起来，再谈优雅。</blockquote>
+        </div>
+      </article>
+
+      <article class="character character-miya character-flip" data-reveal>
+        <figure class="char-plate">
+          <div class="char-plate-art">
+            <img src="assets/img/miya.webp" srcset="assets/img/miya-sm.webp 286w, assets/img/miya.webp 553w" sizes="(max-width: 760px) 70vw, 300px" width="553" height="1200" alt="米娅的完整角色设定插画" data-zh-alt="米娅的完整角色设定插画" data-en-alt="Full character illustration of Miya" loading="lazy">
+          </div>
+          <figcaption>CHARACTER SHEET · 02</figcaption>
+        </figure>
+        <div class="char-copy">
+          <div class="char-head">
+            <h3>Miya <span class="char-cn">米娅</span></h3>
+            <p class="char-role" data-zh="声线与画笔" data-en="voice and brush">声线与画笔</p>
+          </div>
+          <p data-zh="粉色长发，蝴蝶结，说话像在唱歌。她负责所有需要被听见的部分：Voice 的声线、Artist 的笔触，还有 Core 里那层米娅语气转换。" data-en="Pink hair, a bow, and a voice that sounds like singing. She handles everything that needs to be heard: Voice's timbre, Artist's brush, and the Miya style pass in Core.">粉色长发，蝴蝶结，说话像在唱歌。她负责所有需要被听见的部分：Voice 的声线、Artist 的笔触，还有 Core 里那层米娅语气转换。</p>
+          <p class="char-more" data-zh="在 Voice 里，她可以是英语、中文或者日语；在 Artist 里，她先学会自己的脸，再画别人的；在 Core 里，她让回答听起来不那么像机器。" data-en="In Voice, she can be English, Chinese or Japanese. In Artist, she learns her own face before drawing anyone else's. In Core, she makes the answers sound less like a machine.">在 Voice 里，她可以是英语、中文或者日语；在 Artist 里，她先学会自己的脸，再画别人的；在 Core 里，她让回答听起来不那么像机器。</p>
+          <div class="char-series">
+            <span class="char-series-label" data-zh="出现在" data-en="Appears in">出现在</span>
+            <span>Voice</span><span>Artist</span><span>AI Core</span>
+          </div>
+          <blockquote class="quote" data-zh="同一句话，可以有十七种说法。" data-en="One sentence can be said seventeen ways.">同一句话，可以有十七种说法。</blockquote>
+        </div>
+      </article>
+
+      <p class="char-note" data-reveal data-zh="设定与插画来自 380 本人的 OC。请勿商用。" data-en="Character design and illustrations from 380's own OC. Please don't use them commercially.">设定与插画来自 380 本人的 OC。请勿商用。</p>
+    </div>
+  </section>
+
+  <!-- ============================= ABOUT =========================== -->
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-copy" data-reveal>
+          <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span><span>05 / <span data-zh="关于" data-en="About">关于</span></span></p>
+          <h2 class="section-title" id="about-title" data-zh="一个人，一台 i5" data-en="One person, one i5">一个人，一台 i5</h2>
+          <p data-zh="Lumina 是 380 的业余项目，从南航的一间宿舍里跑出来。没有团队，没有融资，只有一堆在夜里编译的 DLL 和两个猫耳角色。" data-en="Lumina is 380's spare-time project, out of a dorm room at NUAA. No team, no funding — just a pile of DLLs compiled late at night and two cat-eared characters.">Lumina 是 380 的业余项目，从南航的一间宿舍里跑出来。没有团队，没有融资，只有一堆在夜里编译的 DLL 和两个猫耳角色。</p>
+          <p data-zh="代码以 AGPL-3.0 开放。想催更、想看翻车现场，或者只是想聊聊 1-bit 推理，都欢迎来 B 站。" data-en="The code is open under AGPL-3.0. If you want to nudge the next release, watch something break live, or just talk about 1-bit inference, the Bilibili channel is the place.">代码以 AGPL-3.0 开放。想催更、想看翻车现场，或者只是想聊聊 1-bit 推理，都欢迎来 B 站。</p>
+
+          <ul class="about-facts">
+            <li><span data-zh="平台" data-en="Platform">平台</span><span>Windows 10 / 11 · x86-64</span></li>
+            <li><span data-zh="许可" data-en="License">许可</span><span>AGPL-3.0 · MIT upstream</span></li>
+            <li><span data-zh="状态" data-en="Status">状态</span><span data-zh="持续更新" data-en="in progress">持续更新</span></li>
+          </ul>
+
+          <div class="about-links">
+            <a class="btn btn-ghost" href="https://github.com/Happy-380" target="_blank" rel="noopener">
+              <svg class="ico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.6a6.5 6.5 0 0 0-2 12.7c.3 0 .4-.2.4-.4v-1.4c-1.8.4-2.2-.8-2.2-.8-.3-.7-.7-.9-.7-.9-.6-.4 0-.4 0-.4.6 0 1 .7 1 .7.5.9 1.4.7 1.8.5 0-.4.2-.7.4-.8-1.5-.2-3-.7-3-3.2 0-.7.3-1.3.7-1.7 0-.2-.3-.8.1-1.7 0 0 .6-.2 1.8.7a6.3 6.3 0 0 1 3.3 0c1.2-.9 1.8-.7 1.8-.7.4.9.1 1.5.1 1.7.4.4.7 1 .7 1.7 0 2.5-1.5 3-3 3.2.3.2.5.7.5 1.4v2c0 .2.1.4.5.4A6.5 6.5 0 0 0 8 1.6Z" fill="currentColor"/></svg>
+              <span>GitHub</span>
+            </a>
+            <a class="btn btn-ghost" href="https://space.bilibili.com/3546376302496335" target="_blank" rel="noopener">
+              <svg class="ico" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5.4 2.2 7.2 4h1.6l1.8-1.8M3.2 4h9.6A1.2 1.2 0 0 1 14 5.2v6.3a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 11.5V5.2A1.2 1.2 0 0 1 3.2 4Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.4 7.2v2.4M10.6 7.2v2.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <span data-zh="B 站" data-en="Bilibili">B 站</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="support" data-reveal style="--i:1">
+          <div class="support-head">
+            <span class="support-title" data-zh="微信赞赏" data-en="WeChat tip">微信赞赏</span>
+            <span class="support-tag" data-zh="自愿 · 不打赏也能用" data-en="optional · never required">自愿 · 不打赏也能用</span>
+          </div>
+          <button class="qr-btn" type="button" id="qr-open" aria-haspopup="dialog" data-zh-aria="放大赞赏码" data-en-aria="Enlarge the reward code">
+            <img src="assets/img/wechat-reward.webp" width="720" height="720" alt="微信赞赏二维码" data-zh-alt="微信赞赏二维码" data-en-alt="WeChat reward QR code" loading="lazy">
+            <span class="qr-hint"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2H2v4M10 2h4v4M6 14H2v-4M10 14h4v-4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span data-zh="点击放大" data-en="click to enlarge">点击放大</span></span>
+          </button>
+          <p class="support-copy" data-zh="如果它帮你省下了一次订阅费，可以请我喝杯咖啡。" data-en="If it saved you a subscription, you can buy me a coffee.">如果它帮你省下了一次订阅费，可以请我喝杯咖啡。</p>
+          <p class="hand support-hand" data-zh="一架从南航跑出来的 380。" data-en="a 380, out of NUAA.">一架从南航跑出来的 380。</p>
+          <p class="support-fine" data-zh="Lumina-Engine 基于 llama.cpp（MIT）；Lumina Voice 基于 MeloTTS（MIT）；系列代码默认 AGPL-3.0。" data-en="Lumina Engine builds on llama.cpp (MIT); Lumina Voice builds on MeloTTS (MIT); the series is AGPL-3.0 by default.">Lumina-Engine 基于 llama.cpp（MIT）；Lumina Voice 基于 MeloTTS（MIT）；系列代码默认 AGPL-3.0。</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <a class="foot-brand" href="#top" aria-label="Lumina home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <circle cx="16" cy="16" r="9.4" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M16 1.5v6M16 24.5v6M1.5 16h6M24.5 16h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+        </svg>
+        <span>Lumina</span>
+      </a>
+      <p class="foot-line" data-zh="五个项目，两个角色，一间工坊。全部在本地。" data-en="Five projects, two characters, one workshop. All local.">五个项目，两个角色，一间工坊。全部在本地。</p>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col">
+        <h4 data-zh="系列" data-en="Series">系列</h4>
+        <a href="#series" data-zh="AI Core" data-en="AI Core">AI Core</a>
+        <a href="#series" data-zh="Engine" data-en="Engine">Engine</a>
+        <a href="#voice" data-zh="Voice" data-en="Voice">Voice</a>
+        <a href="#series" data-zh="Artist" data-en="Artist">Artist</a>
+        <a href="#series" data-zh="AR" data-en="AR">AR</a>
+      </div>
+      <div class="foot-col">
+        <h4 data-zh="项目" data-en="Projects">项目</h4>
+        <a href="https://github.com/Happy-380" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://github.com/Happy-380/Lumina-AI-Core" target="_blank" rel="noopener">Lumina AI Core ↗</a>
+        <a href="https://github.com/Happy-380/Lumina-Engine" target="_blank" rel="noopener">Lumina Engine ↗</a>
+        <a href="https://space.bilibili.com/3546376302496335" target="_blank" rel="noopener" data-zh="B 站 ↗" data-en="Bilibili ↗">B 站 ↗</a>
+      </div>
+      <div class="foot-col foot-appearance">
+        <h4 data-zh="外观" data-en="Appearance">外观</h4>
+        <div class="foot-theme" role="group" aria-label="主题 / Theme">
+          <button type="button" data-theme-set="auto"><span data-zh="跟随系统" data-en="Auto">跟随系统</span></button>
+          <button type="button" data-theme-set="light"><span data-zh="浅色" data-en="Light">浅色</span></button>
+          <button type="button" data-theme-set="dark"><span data-zh="深色" data-en="Dark">深色</span></button>
+        </div>
+        <div class="foot-lang" role="group" aria-label="语言 / Language">
+          <button type="button" data-lang-set="zh">中文</button>
+          <button type="button" data-lang-set="en">English</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 Lumina Series · made by 380</span>
+      <span class="foot-privacy" data-zh="本页不加载任何第三方脚本或字体" data-en="No third-party scripts or fonts on this page">本页不加载任何第三方脚本或字体</span>
+      <a href="#top" class="to-top"><span data-zh="回到顶部" data-en="Back to top">回到顶部</span><svg viewBox="0 0 12 26" aria-hidden="true" focusable="false"><path d="M6 25V3M1.5 7.5 6 3l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <div class="foot-ghost" aria-hidden="true">LUMINA</div>
+  </div>
+</footer>
+
+<nav class="rail" aria-label="页面索引" data-zh-aria="页面索引" data-en-aria="Page index">
+  <a href="#series" data-rail="series"><span class="rail-dot"></span><span class="rail-label" data-zh="系列" data-en="Series">系列</span></a>
+  <a href="#engine" data-rail="engine"><span class="rail-dot"></span><span class="rail-label" data-zh="引擎" data-en="Engine">引擎</span></a>
+  <a href="#voice" data-rail="voice"><span class="rail-dot"></span><span class="rail-label" data-zh="声音" data-en="Voice">声音</span></a>
+  <a href="#characters" data-rail="characters"><span class="rail-dot"></span><span class="rail-label" data-zh="角色" data-en="Characters">角色</span></a>
+  <a href="#about" data-rail="about"><span class="rail-dot"></span><span class="rail-label" data-zh="关于" data-en="About">关于</span></a>
+</nav>
+
+<dialog class="qr-dialog" id="qr-dialog" aria-labelledby="qr-dialog-title">
+  <div class="qr-dialog-inner">
+    <div class="qr-dialog-head">
+      <div>
+        <h3 id="qr-dialog-title" data-zh="微信赞赏" data-en="WeChat tip">微信赞赏</h3>
+        <p data-zh="感谢支持 Lumina 项目～" data-en="Thanks for supporting Lumina.">感谢支持 Lumina 项目～</p>
+      </div>
+      <button type="button" class="qr-close" id="qr-close" data-zh-aria="关闭" data-en-aria="Close" autofocus>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span class="vh" data-zh="关闭" data-en="Close">关闭</span>
+      </button>
+    </div>
+    <img class="qr-dialog-img" src="assets/img/wechat-reward.webp" width="720" height="720" alt="微信赞赏二维码" data-zh-alt="微信赞赏二维码" data-en-alt="WeChat reward QR code">
+    <p class="qr-dialog-foot hand" data-zh="一架从南航跑出来的 380 的赞赏码。" data-en="A tip code from a 380 who ran out of NUAA.">一架从南航跑出来的 380 的赞赏码。</p>
+  </div>
+</dialog>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
