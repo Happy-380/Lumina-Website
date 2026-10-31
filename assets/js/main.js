@@ -29,11 +29,11 @@
   var META = {
     zh: {
       title: "Lumina — 一间属于你自己的 AI 工坊",
-      desc: "Lumina 系列：AI Core、Engine、Voice、Artist 与 AR。全部跑在本地，围绕两个原创角色展开。"
+      desc: "Lumina 系列：AI Core、Engine、Voice、Artist、Animate 与 AR。全部跑在本地，围绕两个原创角色展开。"
     },
     en: {
       title: "Lumina — A workshop of light",
-      desc: "The Lumina series: AI Core, Engine, Voice, Artist and AR. Local-first tools built around two original characters."
+      desc: "The Lumina series: AI Core, Engine, Voice, Artist, Animate and AR. Local-first tools built around two original characters."
     }
   };
 
