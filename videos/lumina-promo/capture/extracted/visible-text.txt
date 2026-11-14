@@ -1,0 +1,322 @@
+跳到主要内容
+Lumina
+SERIES
+系列
+引擎
+声音
+角色
+关于
+中
+EN
+跟随系统
+浅色
+深色
+
+六个项目 · 两个角色 · 一间工坊
+
+Lumina
+
+把光留在自己的机器里。
+
+从 1-bit 推理内核，到会说话、会画画、迟早站上你桌面的角色。Lumina 是一个人的 AI 工坊：能离线就离线，能本地就本地，联网只是一个选项。
+
+看看这一系列
+GitHub
+
+CPU-FIRST
+AGPL-3.0
+无需账号
+
+Ewin
+值班员
+Miya
+声线与画笔
+这俩是主角。
+01
+AI CORE
+02
+ENGINE
+03
+VOICE
+04
+ARTIST
+05
+ANIMATE
+06
+AR
+往下看
+
+先说清楚
+
+不是平台，不是订阅，也不是「AI 助手」。
+是一套能拆开、带走、断网继续用的工具。
+
+六个项目共用一个前提：模型应该待在它该待的地方——你的电脑里。能离线就离线，能本地就本地。
+
+没有云端
+没有账号
+没有额度
+
+断网也能跑。 真的。
+
+01 / 系列
+
+六件工具，同一间工坊
+
+三件已经能跑，一件在内部天天用，一件做完了原型，还有一件在图纸上。
+
+01
+可用
+Lumina AI Core
+
+会聊天的那一层
+
+本地大模型对话内核：1.7B / 4B / 8B 三档模型、语义缓存、历史检索、MCP 智能工具选择，以及米娅语气转换。既能当控制台程序，也能作为类库嵌进别的应用。
+
+C#
+GGUF
+MCP
+中英
+类库
+查看仓库
+02
+可用
+Lumina Engine
+
+把 1-bit 模型压进 CPU
+
+基于 llama.cpp 的 Q1_0 推理分支：14 个 CPU 变体、per-128 激活、寄存器分块 GEMM、二值查表。内核之外还有量化模型 QLoRA 训练、无损 GGUF 压缩和 Vulkan 自动设备策略。
+
+C++
+AVX2
+VNNI
+Vulkan
+QLoRA
+查看仓库
+03
+内部使用
+Lumina Voice
+
+离线开口
+
+六种语言（英语含 5 种口音）的离线 TTS，全部模型内嵌，断网也能用；常驻后台引擎让重复调用约 3 秒起。需要更私人的音色时，再接一段 RVC。
+
+Python
+MeloTTS
+RVC
+离线
+在 B 站看演示
+04
+活跃开发
+Lumina Artist
+
+先画你的角色，再画你的画
+
+纯 C/C++ 的 diffusion 工作台，基于 stable-diffusion.cpp：SD / SDXL / Flux / Qwen-Image / Wan 等模型推理，SD/SDXL UNet 的 LoRA 训练，ImGui 桌面界面、适配器叠加与合并，以及无损 .lumina 容器。
+
+C++
+Diffusion
+LoRA
+ImGui
+在 B 站关注进度
+05
+原型
+Lumina Animate
+
+把角色做成像素小人
+
+把埃文和米娅重绘成像素画，再让他们眨眼、走路、问好、跟着鼠标看；点一下地面，就朝那里走过去。纯前端，离线可开，还带一个像素编辑器。
+
+像素
+SVG
+交互
+离线
+在 B 站关注进度
+06
+未发布
+Lumina AR
+
+让角色站到桌面上
+
+AR 虚拟角色引擎：骨骼、追踪、实时驱动。把设定稿里的两个猫耳请出来，站在摄像头、桌面和你的手边。
+
+AR
+骨骼
+实时
+在 B 站关注进度
+
+02 / ENGINE
+
+把 1-bit 塞进 CPU 的每一条流水线
+
+Lumina Engine 不只是 Q1_0 的 CPU 内核。它还为量化模型准备了一个 QLoRA 训练器、一个逐字节无损的 GGUF 压缩容器，以及一套会自己判断 CPU / GPU 的调度策略。
+
+核心仍然是为 Bonsai 的 ±1 权重写的：per-128 激活量化、寄存器分块 GEMM、单列 GEMV、二值查表。其余量化类型、后端和模型保持原样。
+
+试一下
+· · ·
+Lumina-Engine-cli.exe -m Bonsai-8B.gguf -p "..." -n 256 -t 6
+复制
+读完整 README
+PROMPT 处理 / 相对通用路径
+优化后
+通用
+pp32
++42.5%
+pp64
++40.5%
+pp128
++36.8%
+pp256
++33.4%
+pp512
++28.5%
+
+i5-10400 · 6 线程 · 单通道 DDR4-2666 · Bonsai-8B（1.07 GiB）。同场 A/B；绝对值受内存带宽影响，比值更可靠。
+
+Token 生成（tg）+13%；打开 Q1LUT 后本机 tg 约 +30%。
+
+14
+CPU 微架构变体
+1.07GiB
+8B 模型常驻内存
+5.71
+困惑度，仍然无损
+94.28%
+无损压缩后体积
+TRAIN / QLORA
+量化模型也能微调
+
+基座权重保持冻结，只训练低秩适配器；支持 text / messages / conversations 三种数据集、检查点与续训，也能训练 MoE 专家，输出标准 LoRA GGUF。
+
+PACK / .GGUF.LUMINA
+更小的文件，字节不变
+
+把 K-quant 字段拆开再压缩，2.63 GB 的 Q4_K_M 模型变成 2.48 GB；解压后 SHA-256 与原文件一致，引擎按魔数自动识别并透明加载。
+
+DEVICE / AUTO
+自己决定 CPU 还是 GPU
+
+无 GPU 走纯 CPU；核显跑 dense 模型时把层留在 CPU、算子交给 Vulkan（pp 约 2.4×）；MoE 回到 CPU；独显按显存整层 offload。显式 -ngl 始终优先。
+
+03 / VOICE
+
+先听见，再相信
+
+六种语言的离线 TTS。所有 checkpoint 和 BERT 编码器都嵌在本地，断网也照样开口；需要更私人的音色时，再接一段 RVC。
+
+English
+中文
+日本語
+한국어
+Español
+Français
+6
+种语言
+0.64×
+实时（纯 CPU）
+100%
+离线合成
+
+04 / 角色
+
+他们不是吉祥物
+
+埃文和米娅先是 380 的 OC，后来才变成这套工具的两张脸。AI Core 里的两种回答语气，Voice 里的两种声线，Artist 里的两种画风，Animate 里的两个像素小人，最后都会在 AR 里站到同一张桌子上。
+
+CHARACTER SHEET · 01
+Ewin 埃文
+
+值班员
+
+蓝头发，猫耳，永远穿那件渐变卫衣。他话不多，负责让东西真的跑起来：Engine 的内核、Core 的调度、AR 里的骨骼。
+
+在 Core 里，他是不绕弯子的那种回答；在 Engine 里，他是终端跑完 256 个 token 后的一行 OK；在 AR 里，他负责把每根骨头放回正确的位置。
+
+出现在
+Engine
+AI Core
+Animate
+AR
+先让它跑起来，再谈优雅。
+CHARACTER SHEET · 02
+Miya 米娅
+
+声线与画笔
+
+粉色长发，蝴蝶结，说话像在唱歌。她负责所有需要被听见的部分：Voice 的声线、Artist 的笔触，还有 Core 里那层米娅语气转换。
+
+在 Voice 里，她可以是英语、中文或者日语；在 Artist 里，她先学会自己的脸，再画别人的；在 Core 里，她让回答听起来不那么像机器。
+
+出现在
+Voice
+Artist
+Animate
+AI Core
+同一句话，可以有十七种说法。
+
+设定与插画来自 380 本人的 OC。请勿商用。
+
+05 / 关于
+
+一个人，一台 i5
+
+Lumina 是 380 的业余项目，从一台 i5-10400 和一叠没写完的笔记开始。没有团队，没有融资，只有一堆在夜里编译的 DLL 和两个猫耳角色。
+
+代码以 AGPL-3.0 开放。想催更、想看翻车现场，或者只是想聊聊 1-bit 推理，都欢迎来 B 站、小红书或爱发电。
+
+平台
+Windows 10 / 11 · x86-64
+许可
+AGPL-3.0 · MIT upstream
+状态
+持续更新
+GitHub
+B 站
+小红书
+爱发电
+微信赞赏
+自愿 · 不打赏也能用
+点击放大
+
+如果它帮你省下了一次订阅费，可以请我喝杯咖啡。
+
+如果它帮上忙就好。
+
+ 
+也可以在爱发电支持
+
+Lumina-Engine 基于 llama.cpp（MIT）；Lumina Voice 基于 MeloTTS（MIT）；Lumina-Artist 基于 stable-diffusion.cpp（MIT）；系列代码默认 AGPL-3.0。
+
+Lumina
+
+六个项目，两个角色，一间工坊。全部在本地。
+
+系列
+AI Core
+Engine
+Voice
+Artist
+Animate
+AR
+项目
+GitHub ↗
+Lumina AI Core ↗
+Lumina Engine ↗
+B 站 ↗
+小红书 ↗
+爱发电 ↗
+外观
+跟随系统
+浅色
+深色
+中文
+English
+© 2026 Lumina Series · made by 380
+回到顶部
+LUMINA
+系列
+引擎
+声音
+角色
+关于

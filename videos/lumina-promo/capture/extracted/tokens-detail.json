@@ -1,0 +1,26 @@
+{
+  "title": "Lumina — 一间属于你自己的 AI 工坊",
+  "description": "Lumina 系列：AI Core、Engine、Voice、Artist、Animate 与 AR。全部跑在本地，围绕两个原创角色展开。",
+  "colors": {
+    "bg": "#f3f0e9",
+    "bgSoft": "#ece7dc",
+    "card": "#fbf8f2",
+    "ink": "#171a1f",
+    "ink2": "#4f5762",
+    "ink3": "#6b7380",
+    "blue": "#2b62ce",
+    "cyan": "#167c8f",
+    "rose": "#c1577a",
+    "gold": "#a3742c",
+    "teal": "#2b7f74",
+    "panel": "#11141b",
+    "panelInk": "#efeae0",
+    "panelAccent": "#8fbaff"
+  },
+  "fonts": [
+    "\"Segoe UI\", system-ui, -apple-system, \"Microsoft YaHei\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans SC\", sans-serif",
+    "\"Book Antiqua\", \"Palatino Linotype\", Palatino, \"Iowan Old Style\", Georgia,\r\n    \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", \"Hiragino Sans GB\", serif",
+    "\"Cascadia Mono\", \"Cascadia Code\", Consolas, \"SF Mono\", ui-monospace,\r\n    \"Microsoft YaHei\", \"PingFang SC\", monospace",
+    "\"Segoe Print\", \"Bradley Hand\", \"Segoe Script\", \"STKaiti\", \"KaiTi\",\r\n    \"Microsoft YaHei\", \"PingFang SC\", cursive"
+  ]
+}
