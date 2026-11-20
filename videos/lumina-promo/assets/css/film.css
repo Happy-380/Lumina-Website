@@ -67,7 +67,10 @@ body {
   position: absolute;
   left: 0;
   width: 1400px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   font-family: var(--mono);
   font-size: 17px;
   letter-spacing: 0.22em;
@@ -75,9 +78,28 @@ body {
   color: var(--ink-3);
   opacity: 0;
 }
+/* the one colour a studio is allowed: the site's own status accent, 6 px */
+.node .accent {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+/* a 44 px tick under the station label — the scene's accent, nothing more */
+.node::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 31px;
+  width: 44px;
+  height: 1px;
+  margin-left: -22px;
+  background: var(--accent-text, var(--ink-3));
+  opacity: 0.55;
+}
 .anchor {
   position: absolute;
-  color: var(--ink);
+  color: var(--accent-text, var(--ink));
   opacity: 0;
 }
 .anchor svg {
@@ -99,7 +121,7 @@ body {
   opacity: 0;
 }
 .wordmark .pname {
-  color: var(--ink-2);
+  color: var(--accent-text, var(--ink-2));
   margin-left: 0.3em;
 }
 .caption {
@@ -193,9 +215,50 @@ body {
   background: radial-gradient(closest-side, rgba(214, 230, 255, 0.16), rgba(214, 230, 255, 0) 70%);
   opacity: 0;
 }
+/* a bloom that rides with the head of the light track */
+.head-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(206, 226, 255, 0.22), rgba(206, 226, 255, 0.06) 38%, rgba(206, 226, 255, 0) 66%);
+  opacity: 0;
+}
+/* voice: the wire, turned into a spectrum */
+#g-voice .spec-base {
+  opacity: 0;
+  stroke: rgba(242, 239, 230, 0.42);
+  stroke-width: 1.2;
+}
+#g-voice .spec-bar {
+  fill: url(#spec-grad);
+  stroke: none;
+}
+/* artist: a dotted trace ring and a warm halo behind the badge */
+#trace-ring {
+  stroke: rgba(242, 239, 230, 0.3);
+  stroke-width: 1;
+}
+.badge-glow {
+  position: absolute;
+  left: 590px;
+  top: 246px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(163, 116, 44, 0.22), rgba(163, 116, 44, 0.06) 52%, rgba(163, 116, 44, 0) 74%);
+  opacity: 0;
+}
 .glass {
   position: absolute;
   overflow: hidden;
+}
+/* a corner of the scene's own accent, low enough to be felt rather than seen */
+.wash {
+  position: absolute;
+  width: 1080px;
+  height: 1080px;
+  pointer-events: none;
 }
 .risers {
   position: absolute;
@@ -207,7 +270,7 @@ body {
   position: absolute;
   width: 22px;
   height: 22px;
-  border: 0 solid rgba(242, 239, 230, 0.16);
+  border: 0 solid var(--accent-crop, rgba(242, 239, 230, 0.16));
 }
 .crop i:nth-child(1) { left: 250px; top: 260px; border-left-width: 1px; border-top-width: 1px; }
 .crop i:nth-child(2) { right: 250px; top: 260px; border-right-width: 1px; border-top-width: 1px; }
@@ -225,10 +288,69 @@ body {
 .detail {
   position: absolute;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 15px;
+  line-height: 1.9;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(242, 239, 230, 0.58);
+}
+/* engine: the real figures as a measured spec strip — serif figure, mono unit */
+.spec {
+  position: absolute;
+  left: 0;
+  top: 408px;
+  width: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  opacity: 0;
+}
+.spec-cell {
+  padding: 0 34px;
+  text-align: center;
+  border-left: 1px solid rgba(242, 239, 230, 0.13);
+}
+.spec-cell:first-child {
+  border-left: 0;
+}
+.spec b {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 54px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: rgba(242, 239, 230, 0.95);
+}
+.spec b .unit {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  color: rgba(242, 239, 230, 0.62);
+}
+.spec .lab {
+  display: block;
+  margin-top: 15px;
+  font-family: var(--mono);
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--ink-3);
+}
+/* voice: the six languages sit under the spectrum, evenly spaced on the axis */
+.langs {
+  position: absolute;
+  left: 0;
+  top: 604px;
+  width: 1400px;
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.18em;
+  color: rgba(242, 239, 230, 0.55);
+  opacity: 0;
 }
 .cap-en {
   display: block;
